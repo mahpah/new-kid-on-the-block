@@ -1,0 +1,9 @@
+POST http://localhost:3000/mine
+Content-Type: application/json
+
+{
+  "data": "any thing"
+}
+
+###
+GET http://localhost:3000/blocks
