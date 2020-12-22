@@ -3,7 +3,7 @@ import sha256 from 'crypto-js/sha256'
 
 export class Block {
   private static MinDifficulty = 2
-  private static BlockTime = 5e3
+  private static BlockTime = 1e3
 
   constructor(
     public timestamp: number,
@@ -55,5 +55,9 @@ export class Block {
       ? lastBlock.difficulty + 1
       : lastBlock.difficulty - 1
     return dif < Block.MinDifficulty ? Block.MinDifficulty : dif 
+  }
+
+  equals(block: Block) {
+    return this.toString() === block.toString()
   }
 }

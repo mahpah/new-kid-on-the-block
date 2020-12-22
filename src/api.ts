@@ -2,9 +2,13 @@ import express from 'express'
 import { BlockChain } from './block-chain'
 import { json } from 'body-parser'
 import morgan from 'morgan'
+import { Node } from './node'
 const blockChain = new BlockChain()
 
+const port = parseInt(process.argv[2])
 const app = express()
+const node = new Node(blockChain)
+
 app.use(morgan('short'))
 app.use(json())
 
@@ -27,6 +31,20 @@ app.post('/mine', (req, res) => {
   res.json(block)
 })
 
-app.listen(3000, () => {
-  console.log('API listen on 3000')
+node.start()
+app.listen(port, () => {
+  console.log(`API listen on ${port}`)
+})
+
+process.on('beforeExit', () => {
+  console.log('Removing peer list')
+  
+})
+
+process.on('SIGINT', () => {
+  console.log('Removing peer list')
+  node.destroy().then(() => {
+    console.log('Bye')
+    process.exit(0)
+  })
 })
